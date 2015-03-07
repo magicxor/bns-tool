@@ -2,7 +2,7 @@
 
 Tool for paste text from clipboard into Blade & Soul® MMORPG window.
 
-# Screenshot
+### Screenshot
 ![Screenshot](https://hsto.org/files/aa7/27f/60b/aa727f60ba9d45d29e5cc77290788cf9.png)
 
 ### Пожертвования / Donate:
