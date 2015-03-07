@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, ExtCtrls, uIniManager, Clipbrd, System.Math;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, ExtCtrls, uIniManager, Clipbrd,
+  System.Math;
 
 type
   TFormMain = class(TForm)
@@ -95,6 +96,7 @@ end;
 
 procedure TFormMain.FindWndAndPaste(Multiline: boolean);
 var
+  hlarr: HWNDArr;
   hl: HWND;
   clipboardStrings: TArray<System.string>;
   oneStr, previousStr, separatorString: string;
@@ -102,43 +104,49 @@ var
   separatorArr: array of Char;
 begin
   // другой признак: Window Text = "PlayBNS.COM :: Blade&Soul"
-  hl := FindHWDNsByWndClass('LaunchUnrealUWindowsClient')[0];
-  //
-  separatorString := sLineBreak;
-  separatorArr := [];
-  for oneChr in separatorString do
-    separatorArr := separatorArr + [oneChr];
-  //
-  clipboardStrings := Clipboard.AsText.Split(separatorArr);
-  //
-  previousStr := '';
-  for oneStr in clipboardStrings do
+  hlarr := FindHWDNsByWndClass('LaunchUnrealUWindowsClient');
+  if Length(hlarr) > 0 then
   begin
-    if (not(oneStr.Trim = '') and not(oneStr = previousStr) and Multiline) or not(Multiline) then
+    hl := hlarr[0];
+    //
+    separatorString := sLineBreak;
+    separatorArr := [];
+    for oneChr in separatorString do
+      separatorArr := separatorArr + [oneChr];
+    //
+    clipboardStrings := Clipboard.AsText.Split(separatorArr);
+    //
+    previousStr := '';
+    for oneStr in clipboardStrings do
     begin
-      if Multiline then
-      // активируем чат
+      if (not(oneStr.Trim = '') and not(oneStr = previousStr) and Multiline) or not(Multiline) then
       begin
-        PostMessage(hl, WM_KEYDOWN, VK_RETURN, 0);
-        Sleep(200);
+        if Multiline then
+        // активируем чат
+        begin
+          PostMessage(hl, WM_KEYDOWN, VK_RETURN, 0);
+          Sleep(200);
+        end;
+        // пишем сообщение
+        for oneChr in oneStr do
+        begin
+          Sleep(RandomRange(20, 50));
+          PostMessage(hl, WM_CHAR, Ord(oneChr), 0);
+        end;
+        // либо отправляем и пишем следующее, либо добавяем пробел
+        if Multiline then
+        begin
+          PostMessage(hl, WM_KEYDOWN, VK_RETURN, 0);
+          Sleep(RandomRange(300, 600));
+        end
+        else
+          PostMessage(hl, WM_CHAR, Ord(' '), 0);
+        previousStr := oneStr;
       end;
-      // пишем сообщение
-      for oneChr in oneStr do
-      begin
-        Sleep(RandomRange(20, 50));
-        PostMessage(hl, WM_CHAR, Ord(oneChr), 0);
-      end;
-      // либо отправляем и пишем следующее, либо добавяем пробел
-      if Multiline then
-      begin
-        PostMessage(hl, WM_KEYDOWN, VK_RETURN, 0);
-        Sleep(RandomRange(300, 600));
-      end
-      else
-        PostMessage(hl, WM_CHAR, Ord(' '), 0);
-      previousStr := oneStr;
     end;
-  end;
+  end
+  else
+    ShowMessage('Окно игры не найдено');
 end;
 
 end.

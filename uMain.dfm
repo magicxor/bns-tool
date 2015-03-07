@@ -3,7 +3,7 @@ object FormMain: TFormMain
   Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
-  Caption = 'B&S tool'
+  Caption = 'B&S tool 1.1'
   ClientHeight = 93
   ClientWidth = 219
   Color = clBtnFace
@@ -70,8 +70,6 @@ object FormMain: TFormMain
     Caption = 'Apply && Save'
     TabOrder = 0
     OnClick = ButtonApplyAndSaveClick
-    ExplicitTop = 61
-    ExplicitWidth = 199
   end
   object HotKeyMultilinePaste: THotKey
     Left = 111
