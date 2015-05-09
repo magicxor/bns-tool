@@ -1,4 +1,7 @@
-﻿unit uMain;
+﻿/// <summary>
+/// Main application form
+/// </summary>
+unit uMain;
 
 interface
 
@@ -59,34 +62,33 @@ end;
 
 procedure TFormMain.ButtonApplyAndSaveClick(Sender: TObject);
 begin
-  // Освобождаем хоткеи
+  // Remove all hotkeys from the system
   UnRegAllGlobalHotKeys;
-  // Сохраняем настройки
+  // Save settings
   IniSettings.HotKeysPaste := HotKeyPaste.HotKey;
   IniSettings.HotKeysMultilinePaste := HotKeyMultilinePaste.HotKey;
   IniSettings.SaveToFile(ExtractFilePath(Application.ExeName) + CSettingsIniShortFileName);
-  // Регистрируем и запоминаем хоткеи
+  // Register and remember all hotkeys
   RegAllGlobalHotKeys;
 end;
 
 procedure TFormMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  // Освобождаем хоткеи
   UnRegAllGlobalHotKeys;
 end;
 
 procedure TFormMain.FormCreate(Sender: TObject);
 begin
-  // Загружаем хоткей
+  // Load settings (hotkeys)
   IniSettings.LoadFromFile(ExtractFilePath(Application.ExeName) + CSettingsIniShortFileName);
   HotKeyPaste.HotKey := IniSettings.HotKeysPaste;
   HotKeyMultilinePaste.HotKey := IniSettings.HotKeysMultilinePaste;
-  // Регистрируем и запоминаем хоткеи
+  // Register all hotkeys
   RegAllGlobalHotKeys;
 end;
 
 procedure TFormMain.WMHotKey(var CurWMHotKey: TWMHotKey);
-// Обработчик глобальных горячих клавиш
+// Hotkeys processing
 begin
   if CurWMHotKey.HotKey = HotKeyPasteAtomCode then
     FindWndAndPaste(false);
@@ -103,37 +105,37 @@ var
   oneChr: Char;
   separatorArr: array of Char;
 begin
-  // другой признак: Window Text = "PlayBNS.COM :: Blade&Soul"
+  // or Window Text = "PlayBNS.COM :: Blade&Soul"
   hlarr := FindHWDNsByWndClass('LaunchUnrealUWindowsClient');
   if Length(hlarr) > 0 then
   begin
     hl := hlarr[0];
-    //
+
     separatorString := sLineBreak;
     separatorArr := [];
     for oneChr in separatorString do
       separatorArr := separatorArr + [oneChr];
-    //
+
     clipboardStrings := Clipboard.AsText.Split(separatorArr);
-    //
+
     previousStr := '';
     for oneStr in clipboardStrings do
     begin
       if (not(oneStr.Trim = '') and not(oneStr = previousStr) and Multiline) or not(Multiline) then
       begin
         if Multiline then
-        // активируем чат
+        // activate chat window
         begin
           PostMessage(hl, WM_KEYDOWN, VK_RETURN, 0);
           Sleep(200);
         end;
-        // пишем сообщение
+        // write a message
         for oneChr in oneStr do
         begin
           Sleep(RandomRange(20, 50));
           PostMessage(hl, WM_CHAR, Ord(oneChr), 0);
         end;
-        // либо отправляем и пишем следующее, либо добавяем пробел
+        // send it (or add space character)
         if Multiline then
         begin
           PostMessage(hl, WM_KEYDOWN, VK_RETURN, 0);
@@ -146,7 +148,7 @@ begin
     end;
   end
   else
-    ShowMessage('Окно игры не найдено');
+    ShowMessage('The game window is not found');
 end;
 
 end.

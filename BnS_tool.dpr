@@ -1,3 +1,10 @@
+/// <summary>
+///   Tool for paste text from clipboard into Blade &amp; Soul® MMORPG window <br />
+/// </summary>
+/// <remarks>
+///   This software is released under the GPLv3 license. See LICENSE.md.
+///   Author: mailparser@mail.ru
+/// </remarks>
 program BnS_tool;
 
 uses
