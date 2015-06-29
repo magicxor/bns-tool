@@ -44,7 +44,7 @@ implementation
 
 {$R *.dfm}
 
-uses uGlobalHotKeys, uFindWnd;
+uses uGlobalHotKeys;
 
 procedure TFormMain.RegAllGlobalHotKeys;
 begin
@@ -98,7 +98,6 @@ end;
 
 procedure TFormMain.FindWndAndPaste(Multiline: boolean);
 var
-  hlarr: HWNDArr;
   hl: HWND;
   clipboardStrings: TArray<System.string>;
   oneStr, previousStr, separatorString: string;
@@ -106,11 +105,9 @@ var
   separatorArr: array of Char;
 begin
   // or Window Text = "PlayBNS.COM :: Blade&Soul"
-  hlarr := FindHWDNsByWndClass('LaunchUnrealUWindowsClient');
-  if Length(hlarr) > 0 then
+  hl := FindWindow('LaunchUnrealUWindowsClient', nil);
+  if hl > 0 then
   begin
-    hl := hlarr[0];
-
     separatorString := sLineBreak;
     separatorArr := [];
     for oneChr in separatorString do

@@ -3,7 +3,7 @@ object FormMain: TFormMain
   Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
-  Caption = 'B&S tool 1.1'
+  Caption = 'B&S tool 1.2'
   ClientHeight = 93
   ClientWidth = 219
   Color = clBtnFace
