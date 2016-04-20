@@ -22,9 +22,3 @@ Tool for paste text from clipboard into Blade & Soul® MMORPG window.
 ### Compilation Guide
 
 In order to compile this sources on Windows, you need to install the Embarcadero RAD Studio XE7 Update 1 environment.
-
-### Пожертвования / Donate:
-
-[Яндекс.Деньги / Yandex.Money](https://money.yandex.ru/direct-payment.xml?_openstat=template%3Bmenu%3Bp2p): 410011882837351
-
-[КИВИ / QIWI](https://qiwi.ru/transfer/email.action): mailparser@mail.ru
